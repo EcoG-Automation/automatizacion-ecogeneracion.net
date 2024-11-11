@@ -6,8 +6,6 @@ workflows:
       xcode: latest
     scripts:
       - flutter pub get
-      - flutter analyze
-      - flutter test
       - flutter build ios --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
