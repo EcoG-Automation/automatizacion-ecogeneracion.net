@@ -7,6 +7,6 @@ workflows:
     scripts:
       - flutter pub get
       - flutter build ios --release --no-codesign
-      - flutter build ipa --release --no-codesign
+      - flutter build ipa --release
     artifacts:
       - build/ios/ipa/*.ipa
