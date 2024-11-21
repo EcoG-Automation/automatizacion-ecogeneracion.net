@@ -4,10 +4,12 @@ import 'dart:math';
 import 'settings_activity.dart'; // Importa el archivo de configuraciones
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,10 +18,10 @@ class MyApp extends StatelessWidget {
       //NORMAL THEME
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        primaryColor: Color(0xFF42A5F5),
+        primaryColor: const Color(0xFF42A5F5),
         brightness: Brightness.light, // Modo claro
 
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF4064B4), // Color de fondo del AppBar en modo oscuro
           titleTextStyle: TextStyle(
             color: Colors.white, // Color del texto
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Color(0xFF4064B4), // Color del texto en el botón
+            backgroundColor: const Color(0xFF4064B4), // Color del texto en el botón
           ),
         ),
       ),
@@ -43,13 +45,13 @@ class MyApp extends StatelessWidget {
 
       darkTheme: ThemeData(
         primarySwatch: Colors.blue,
-        primaryColor: Color(0xFF42A5F5),
+        primaryColor: const Color(0xFF42A5F5),
         brightness: Brightness.dark, // Modo oscuro
 
 
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.blueGrey[900], // Color de fondo del AppBar en modo oscuro
-          titleTextStyle: TextStyle(
+          titleTextStyle: const TextStyle(
             color: Colors.white, // Color del texto
             fontSize: 24, // Tamaño de la fuente
             fontWeight: FontWeight.bold,
@@ -69,12 +71,14 @@ class MyApp extends StatelessWidget {
 
 
       themeMode: ThemeMode.system, // Cambia entre claro y oscuro según la configuración del sistema
-      home: MainActivity(),
+      home: const MainActivity(),
     );
   }
 }
 
 class MainActivity extends StatefulWidget {
+  const MainActivity({super.key});
+
   @override
   _MainActivityState createState() => _MainActivityState();
 }
@@ -188,28 +192,28 @@ class _MainActivityState extends State<MainActivity> {
       // Resistencias térmicas
       //calculamos los valores necesarios para las resistencias termicas
       double TfluidoK = Tfluido + 273.15;
-      double u_agua = (exp(-6.944)*exp(2036.8/TfluidoK))/1000;
-      double p_agua = 999.83952-0.0678*Tfluido-0.0002*pow(Tfluido,2);
-      double v_agua = u_agua/p_agua;
-    double V_agua = Qfluido/(pi*pow(innerRadius,2)) ;
-    double Re_agua = V_agua*(2*innerRadius)/v_agua;
-    String Flujo_del_agua ;
-    if (Re_agua < 2300) {
-    Flujo_del_agua = "Laminar";
-    } else if (Re_agua > 4000) {
-    Flujo_del_agua = "Turbulento";
+      double uAgua = (exp(-6.944)*exp(2036.8/TfluidoK))/1000;
+      double pAgua = 999.83952-0.0678*Tfluido-0.0002*pow(Tfluido,2);
+      double vAgua = uAgua/pAgua;
+    double VAgua = Qfluido/(pi*pow(innerRadius,2)) ;
+    double reAgua = VAgua*(2*innerRadius)/vAgua;
+    String flujoDelAgua ;
+    if (reAgua < 2300) {
+    flujoDelAgua = "Laminar";
+    } else if (reAgua > 4000) {
+    flujoDelAgua = "Turbulento";
     } else {
-    Flujo_del_agua = "Zona de transición";
+    flujoDelAgua = "Zona de transición";
     }
-    double Cp_agua = 4186;
-    double K_agua = 0.58388 + 0.00083 * Tfluido;
-    double Pr_agua = Cp_agua*u_agua/K_agua;
-    double Nu_agua = 0;
-
+    double cpAgua = 4186;
+    double kAgua = 0.58388 + 0.00083 * Tfluido;
+    double prAgua = cpAgua*uAgua/kAgua;
+    double nuAgua = 0;
+    //vaire
     // Verificar las condiciones
-    if (Re_agua > 10000 && Pr_agua < 160 && Pr_agua > 0.7 &&
+    if (reAgua > 10000 && prAgua < 160 && prAgua > 0.7 &&
     (length / (2 * innerRadius)) > 10) {
-    Nu_agua = 0.023 * pow(Re_agua, 0.8) * pow(Pr_agua, 0.4);
+    nuAgua = 0.023 * pow(reAgua, 0.8) * pow(prAgua, 0.4);
     } else {
     //System.out.println("Las condiciones no se cumplen.");
       setState(() {
@@ -219,36 +223,36 @@ class _MainActivityState extends State<MainActivity> {
     return;
     }
 
-    double h_agua = Nu_agua*K_agua/(2*innerRadius);
+    double hAgua = nuAgua*kAgua/(2*innerRadius);
     double temp2K = temp2 + 273.15;
-    double u_aire = 0.00001827*((291.15+120)/(temp2K+120))*pow(temp2K/291.15,1.5);
-    double p_aire = 101325/(286.9*temp2K);
-    double K_aire = 0.024+0.00005*temp2;
-    double Cp_aire = 1012;
-    double Pr_aire = Cp_aire*u_aire/K_aire;
-    double v_aire = u_aire/p_aire;
-    double Re_aire = Vaire*(2*(outerRadius+insulationThickness))/v_aire;
+    double uAire = 0.00001827*((291.15+120)/(temp2K+120))*pow(temp2K/291.15,1.5);
+    double pAire = 101325/(286.9*temp2K);
+    double kAire = 0.024+0.00005*temp2;
+    double cpAire = 1012;
+    double prAire = cpAire*uAire/kAire;
+    double vAire = uAire/pAire;
+    double reAire = Vaire*(2*(outerRadius+insulationThickness))/vAire;
 
-    String Flujo_del_aire ;
-    if (Re_aire < 2300) {
-    Flujo_del_aire = "Laminar";
-    } else if (Re_aire > 4000) {
-    Flujo_del_aire = "Turbulento";
+    String flujoDelAire ;
+    if (reAire < 2300) {
+    flujoDelAire = "Laminar";
+    } else if (reAire > 4000) {
+    flujoDelAire = "Turbulento";
     } else {
-    Flujo_del_aire = "Zona de transición";
+    flujoDelAire = "Zona de transición";
     }
 
-    double Nu_aire =0.3+((0.62*pow(Re_aire,0.5)*pow(Pr_aire,0.33333333333333333333333333333333))/(pow(1 + pow(0.4/Pr_aire,0.66666666666666666666666666666667),0.25)))*pow(1 + pow(Re_aire/282000,0.625),0.8);
-    double h_aire = Nu_aire*K_aire/(2*(insulationThickness+outerRadius)) ;
+    double nuAire =0.3+((0.62*pow(reAire,0.5)*pow(prAire,0.33333333333333333333333333333333))/(pow(1 + pow(0.4/prAire,0.66666666666666666666666666666667),0.25)))*pow(1 + pow(reAire/282000,0.625),0.8);
+    double hAire = nuAire*kAire/(2*(insulationThickness+outerRadius)) ;
 
-    double R_conv_agua = 1/(h_agua*A1);
-    double R_cond_tub = log(outerRadius/innerRadius)/(2*pi*length*thermalConductivityPipe);
-    double R_cond_aislante = log((insulationThickness+outerRadius)/outerRadius)/(2*pi*length*thermalConductivityInsulation);
-    double R_conv_aire = 1/(h_aire*A3);
-    double Rt = R_conv_agua+R_cond_tub+R_cond_aislante+R_conv_aire;
-    double dQ_dt = (temp2-Tfluido)/Rt;
+    double rConvAgua = 1/(hAgua*A1);
+    double rCondTub = log(outerRadius/innerRadius)/(2*pi*length*thermalConductivityPipe);
+    double rCondAislante = log((insulationThickness+outerRadius)/outerRadius)/(2*pi*length*thermalConductivityInsulation);
+    double rConvAire = 1/(hAire*A3);
+    double Rt = rConvAgua+rCondTub+rCondAislante+rConvAire;
+    double dqDt = (temp2-Tfluido)/Rt;
 
-    double T_tuberia = dQ_dt*(R_conv_agua+R_cond_tub+R_cond_aislante)+Tfluido;
+    double tTuberia = dqDt*(rConvAgua+rCondTub+rCondAislante)+Tfluido;
 
 
 
@@ -259,11 +263,11 @@ class _MainActivityState extends State<MainActivity> {
       setState(() {
         // Actualiza el resultado con el cálculo real
         _pipeTempResult =
-        "Temperatura del exterior de la tuberia con el aislante: ${T_tuberia.toStringAsFixed(2)} °C"; // Reemplaza con el valor calculado real.
+        "Temperatura del exterior de la tuberia con el aislante: ${tTuberia.toStringAsFixed(2)} °C"; // Reemplaza con el valor calculado real.
         // Muestra imágenes si es necesario.
         // Si T_tuberia <= Td, muestra imagen condicionalmente.
-        _showImage = T_tuberia <= Td;
-        _showImage2 = T_tuberia > Td;
+        _showImage = tTuberia <= Td;
+        _showImage2 = tTuberia > Td;
         // Puedes usar un Image widget y controlar su visibilidad.
       });
 
@@ -281,7 +285,7 @@ class _MainActivityState extends State<MainActivity> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Punto de Rocío',
         ),
       ),
@@ -294,64 +298,64 @@ class _MainActivityState extends State<MainActivity> {
 
               TextField(
                 controller: _tempController,
-                decoration: InputDecoration(labelText: "Temperatura(°C)"),
+                decoration: const InputDecoration(labelText: "Temperatura(°C)"),
                 keyboardType: TextInputType.number,
               ),
               TextField(
                 controller: _humController,
-                decoration: InputDecoration(labelText: "Humedad(%)"),
+                decoration: const InputDecoration(labelText: "Humedad(%)"),
                 keyboardType: TextInputType.number,
               ),
               TextField(
                 controller: _newTempController,
-                decoration: InputDecoration(labelText: "Nueva Temperatura(°C)"),
+                decoration: const InputDecoration(labelText: "Nueva Temperatura(°C)"),
                 keyboardType: TextInputType.number,
               ),
               ElevatedButton(
                 onPressed: _calculateDewPoint,
-                child: Text("Calcular punto de rocío"),
+                child: const Text("Calcular punto de rocío"),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(_result),
               Text(_dewPoint),
 
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsActivity()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsActivity()));
                 },
-                child: Text("Configuraciones"),
+                child: const Text("Configuraciones"),
               ),
 
               // Campos adicionales
               TextField(
                 controller: _fluidTempController,
-                decoration: InputDecoration(labelText: "Temperatura del fluido(°C), default: 7"),
+                decoration: const InputDecoration(labelText: "Temperatura del fluido(°C), default: 7"),
                 keyboardType: TextInputType.number,
               ),
               TextField(
                 controller: _flowRateController,
-                decoration: InputDecoration(labelText: "Caudal(m³/s), default: 0.009318422"),
+                decoration: const InputDecoration(labelText: "Caudal(m³/s), default: 0.009318422"),
                 keyboardType: TextInputType.number,
               ),
               TextField(
                 controller: _airVelocityController,
-                decoration: InputDecoration(labelText: "Velocidad del aire(m/s), default: 0.1"),
+                decoration: const InputDecoration(labelText: "Velocidad del aire(m/s), default: 0.1"),
                 keyboardType: TextInputType.number,
               ),
 
 
               ElevatedButton(
                 onPressed: _calculatePipeTemperature,
-                child: Text("Calcular temperatura de la tubería"),
+                child: const Text("Calcular temperatura de la tubería"),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(_pipeTempResult),
               if (_showImage)
                 Image.asset("assets/tuberia_cond.png"),
               if (_showImage2)
                 Image.asset("assets/tuberia_sec.png"),
-              SizedBox(height: 20), // Espacio entre el resultado y el texto
-              Text(
+              const SizedBox(height: 20), // Espacio entre el resultado y el texto
+              const Text(
                 'Powered by Ronald', // Cambia esto por el texto que desees
                 style: TextStyle(
                   fontSize: 16, // Tamaño de fuente

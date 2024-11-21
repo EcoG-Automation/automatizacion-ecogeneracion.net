@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsActivity extends StatefulWidget {
+  const SettingsActivity({super.key});
+
   @override
   _SettingsActivityState createState() => _SettingsActivityState();
 }
@@ -47,7 +49,7 @@ class _SettingsActivityState extends State<SettingsActivity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Configuraciones')),
+      appBar: AppBar(title: const Text('Configuraciones')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -55,37 +57,37 @@ class _SettingsActivityState extends State<SettingsActivity> {
             // Radio Interno
             TextField(
               controller: _innerRadiusController,
-              decoration: InputDecoration(labelText: "Radio Interno de Tubería (m), default: 0.0327"),
+              decoration: const InputDecoration(labelText: "Radio Interno de Tubería (m), default: 0.0327"),
             ),
             // Radio Externo
             TextField(
               controller: _outerRadiusController,
-              decoration: InputDecoration(labelText: "Radio Externo de Tubería (m), default: 0.045"),
+              decoration: const InputDecoration(labelText: "Radio Externo de Tubería (m), default: 0.045"),
             ),
             // Espesor del Aislante
             TextField(
               controller: _insulationThicknessController,
-              decoration: InputDecoration(labelText: "Espesor del Aislante (m), default: 0.01"),
+              decoration: const InputDecoration(labelText: "Espesor del Aislante (m), default: 0.01"),
             ),
             // Longitud de la Tubería
             TextField(
               controller: _lengthController,
-              decoration: InputDecoration(labelText: "Longitud de la Tubería (m), default: 4.5"),
+              decoration: const InputDecoration(labelText: "Longitud de la Tubería (m), default: 4.5"),
             ),
             // Conductividad Térmica de la Tubería
             TextField(
               controller: _thermalConductivityPipeController,
-              decoration: InputDecoration(labelText: "Conductividad Térmica de la Tubería (W/m·K), default: ppr"),
+              decoration: const InputDecoration(labelText: "Conductividad Térmica de la Tubería (W/m·K), default: ppr"),
             ),
             // Conductividad Térmica del Aislante
             TextField(
               controller: _thermalConductivityInsulationController,
-              decoration: InputDecoration(labelText: "Conductividad Térmica del Aislante (W/m·K), default: rubatex"),
+              decoration: const InputDecoration(labelText: "Conductividad Térmica del Aislante (W/m·K), default: rubatex"),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveSettings,
-              child: Text("Guardar Configuraciones"),
+              child: const Text("Guardar Configuraciones"),
             ),
           ],
         ),
